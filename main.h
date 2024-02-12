@@ -18,11 +18,32 @@ typedef struct
 
 } Contact;
 
-bool addNewContact(char *filename, Contact *data, int total);
+void addNewContact();
+// Contact *retrieveContacts(char *filename, Contact *contacts);
+Contact *retrieveContacts(char *filename, int *total);
 void searchContact();
-void editContact(Contact *data, Contact *newUpdate);
-void removeContact();
+void updateContact();
+void deleteContact();
 void printContacts();
+void saveContact();
+void searchByName();
+void searchByNumber();
+void deleteAllContact();
+
 void runCommand();
+void printCommandsAndUsage();
+void runApp();
+void runCommand(int command);
+void printContacts();
+bool fileExists(char *filename);
+void clearInputBuffer();
+bool numberExists(const char *number);
+bool isEmpty(const char *str);
+bool isDigitsOnly(const char *str);
+int getContactIndex(char *str);
+void getIntegerFromStdin(int *inputInteger);
+void toLowerCase();
+void clearTerminal();
+void exitApp();
 
 #endif // CONTACT
