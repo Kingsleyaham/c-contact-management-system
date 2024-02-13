@@ -129,55 +129,6 @@ void runCommand(int command)
 }
 
 /**
- * @brief Add new contact to phonebook
- *
- */
-void addNewContact()
-{
-    char nameInput[MAX_NAME_LEN];
-    char phoneInput[MAX_PHONE_LEN];
-    char emailInput[MAX_EMAIL_LEN];
-    char addressInput[MAX_ADDRESS_LEN];
-
-    printf("\nFill the details below to create a new contact\n");
-
-    printf("Enter name: ");
-    fgets(nameInput, MAX_NAME_LEN, stdin);
-
-    printf("Enter phone number [+234]: ");
-    fgets(phoneInput, MAX_PHONE_LEN, stdin);
-
-    printf("Enter email: ");
-    fgets(emailInput, MAX_EMAIL_LEN, stdin);
-
-    printf("Enter address:");
-    fgets(addressInput, MAX_ADDRESS_LEN, stdin);
-
-    if (nameInput == NULL || addressInput == NULL || emailInput == NULL || phoneInput == NULL)
-    {
-        perror("Error occurred collecting user input");
-        exit(EXIT_FAILURE);
-    }
-
-    // convert name input and address input to lowercase
-    toLowerCase(nameInput);
-    toLowerCase(addressInput);
-
-    strcpy(contacts[currentLen].name, nameInput);
-    strcpy(contacts[currentLen].phone, phoneInput);
-    strcpy(contacts[currentLen].email, emailInput);
-    strcpy(contacts[currentLen].address, addressInput);
-
-    currentLen += 1;
-
-    saveContact();
-
-    printf("\n----------------------------------------\n");
-    printf("contact added succesfully\n");
-    printf("----------------------------------------\n");
-}
-
-/**
  * @brief Fetch all contacts from phonebook
  *
  * @param filename
@@ -216,64 +167,76 @@ Contact *retrieveContacts(char *filename, int *total)
 }
 
 /**
- * @brief print lists of commands for phonebook
+ * @brief Add new contact to phonebook
  *
  */
-void printCommandsAndUsage()
+void addNewContact()
 {
-    printf("\t\t\t-----------------------------------------\n");
-    printf("\t\t\t\tPhonebook Management System \n");
-    printf("\t\t\t-----------------------------------------\n\n");
-    printf("\t\tA command line application that allows users to manage their contacts\n\n");
+    char nameInput[MAX_NAME_LEN];
+    char phoneInput[MAX_PHONE_LEN];
+    char emailInput[MAX_EMAIL_LEN];
+    char addressInput[MAX_ADDRESS_LEN];
 
-    printf("[1] Add new Contact. \n");
-    printf("[2] Update Contact. \n");
-    printf("[3] Display All Contact. \n");
-    printf("[4] Search By Number. \n");
-    printf("[5] Search By Name. \n");
-    printf("[6] Delete Contact. \n");
-    printf("[7] Delete All Contact. \n");
-    printf("[8] HELP. show lists of commands. \n");
-    printf("[9] Clear Terminal. \n");
-    printf("[0] EXIT \n");
+    printf("\nFill the details below to create a new contact\n");
 
-    printf("\n\n");
-}
-
-void printContacts()
-{
-    if (currentLen == 0)
+    // collect input as long as input is not empty
+    do
     {
-        printf("\t\t-------------------------------------------------------\n");
-        printf("\t\t\tYou currently do not have any contact in your phonebook\n");
-        printf("\t\t-------------------------------------------------------\n");
+        printf("Enter name: ");
+        fgets(nameInput, MAX_NAME_LEN, stdin);
+
+        /* code */
+    } while (nameInput[0] == '\n' || nameInput[0] == '\0');
+
+    do
+    {
+        printf("Enter phone number [+234]: ");
+        fgets(phoneInput, MAX_PHONE_LEN, stdin);
+    } while (phoneInput[0] == '\n' || phoneInput[0] == '\0');
+
+    do
+    {
+        printf("Enter email: ");
+        fgets(emailInput, MAX_EMAIL_LEN, stdin);
+    } while (emailInput[0] == '\n' || emailInput[0] == '\0');
+
+    do
+    {
+        printf("Enter address:");
+        fgets(addressInput, MAX_ADDRESS_LEN, stdin);
+    } while (addressInput[0] == '\n' || addressInput[0] == '\0');
+
+    if (nameInput == NULL || addressInput == NULL || emailInput == NULL || phoneInput == NULL)
+    {
+        perror("Error occurred collecting user input");
+        exit(EXIT_FAILURE);
+    }
+
+    if (numberExists(phoneInput))
+    {
+        printf("Number already exist in phonebook\n");
         return;
     }
 
-    printf("\n\t\t+-------------------------------------------------------------------------+\n");
-    printf("\t\t\t\t\t\tLIST OF CONTACTS\n");
-    printf("\t\t+-------------------------------------------------------------------------+\n");
-    printf("\n");
+    // convert name input and address input to lowercase
+    // toLowerCase(nameInput);
+    toLowerCase(addressInput);
 
-    printf("\t-----------------------------------------------------------------------------------------------------\n");
-    printf("\t%-3s | %-14s\t | %-12s\t | %-20s\t | %-35s\n", "S/N", "Name", "Phone No ", "Email Address", "Address");
-    printf("\t-----------------------------------------------------------------------------------------------------\n");
+    strcpy(contacts[currentLen].name, nameInput);
+    strcpy(contacts[currentLen].phone, phoneInput);
+    strcpy(contacts[currentLen].email, emailInput);
+    strcpy(contacts[currentLen].address, addressInput);
 
-    for (size_t i = 0; i < currentLen; i++)
-    {
+    currentLen += 1;
 
-        // remove newline character from strings
-        contacts[i].name[strcspn(contacts[i].name, "\n")] = 0;
-        contacts[i].phone[strcspn(contacts[i].phone, "\n")] = 0;
-        contacts[i].address[strcspn(contacts[i].address, "\n")] = 0;
-        contacts[i].email[strcspn(contacts[i].email, "\n")] = 0;
+    saveContact();
 
-        printf("\t%-3lu | %-14s\t | %-12s\t | %-20s\t | %-35s\n", (i + 1), contacts[i].name, contacts[i].phone, contacts[i].email, contacts[i].address);
-    }
-    printf("\t-----------------------------------------------------------------------------------------------------\n");
-    printf("\n");
+    printf("\n----------------------------------------\n");
+    printf("contact added succesfully\n");
+    printf("----------------------------------------\n");
 }
 
+/** Save newly added contact*/
 void saveContact()
 {
 
@@ -389,7 +352,7 @@ void searchByName()
     fgets(search, BUFFER_SIZE, stdin);
 
     printf("\t-----------------------------------------------------------------------------------------------------\n");
-    printf("\t %-14s\t | %-12s\t | %-20s\t | %-35s\n", "Name", "Phone No ", "Email Address", "Address");
+    printf("\t %-14s\t | %-12s\t | %-20s\t | %-35s\n", "Name", "Phone No [+234]", "Email Address", "Address");
     printf("\t-----------------------------------------------------------------------------------------------------\n");
 
     for (size_t i = 0; i < currentLen; i++)
@@ -421,7 +384,7 @@ void searchByNumber()
     fgets(search, MAX_PHONE_LEN, stdin);
 
     printf("\t-----------------------------------------------------------------------------------------------------\n");
-    printf("\t %-14s\t | %-12s\t | %-20s\t | %-35s\n", "Name", "Phone No ", "Email Address", "Address");
+    printf("\t %-14s\t | %-12s\t | %-20s\t | %-35s\n", "Name", "Phone No [+234]", "Email Address", "Address");
     printf("\t-----------------------------------------------------------------------------------------------------\n");
 
     for (size_t i = 0; i < currentLen; i++)
@@ -506,6 +469,69 @@ void deleteAllContact()
 }
 
 /**
+ * @brief print lists of commands for phonebook
+ *
+ */
+void printCommandsAndUsage()
+{
+    printf("\t\t\t-----------------------------------------\n");
+    printf("\t\t\t\tPhonebook Management System \n");
+    printf("\t\t\t-----------------------------------------\n\n");
+    printf("\t\tA command line application that allows users to manage their contacts\n\n");
+
+    printf("[1] Add new Contact. \n");
+    printf("[2] Update Contact. \n");
+    printf("[3] Display All Contact. \n");
+    printf("[4] Search By Number. \n");
+    printf("[5] Search By Name. \n");
+    printf("[6] Delete Contact. \n");
+    printf("[7] Delete All Contact. \n");
+    printf("[8] HELP. show lists of commands. \n");
+    printf("[9] Clear Terminal. \n");
+    printf("[0] EXIT \n");
+
+    printf("\n\n");
+}
+
+/**
+ * @brief Outputs all contacts to user
+ *
+ */
+void printContacts()
+{
+    if (currentLen == 0)
+    {
+        printf("\t\t-------------------------------------------------------\n");
+        printf("\t\t\tYou currently do not have any contact in your phonebook\n");
+        printf("\t\t-------------------------------------------------------\n");
+        return;
+    }
+
+    printf("\n\t\t+-------------------------------------------------------------------------+\n");
+    printf("\t\t\t\t\t\tLIST OF CONTACTS\n");
+    printf("\t\t+-------------------------------------------------------------------------+\n");
+    printf("\n");
+
+    printf("\t-----------------------------------------------------------------------------------------------------\n");
+    printf("\t%-3s | %-14s\t | %-12s\t | %-20s\t | %-35s\n", "S/N", "Name", "Phone No ", "Email Address", "Address");
+    printf("\t-----------------------------------------------------------------------------------------------------\n");
+
+    for (size_t i = 0; i < currentLen; i++)
+    {
+
+        // remove newline character from strings
+        contacts[i].name[strcspn(contacts[i].name, "\n")] = 0;
+        contacts[i].phone[strcspn(contacts[i].phone, "\n")] = 0;
+        contacts[i].address[strcspn(contacts[i].address, "\n")] = 0;
+        contacts[i].email[strcspn(contacts[i].email, "\n")] = 0;
+
+        printf("\t%-3lu | %-14s\t | %-12s\t | %-20s\t | %-35s\n", (i + 1), contacts[i].name, contacts[i].phone, contacts[i].email, contacts[i].address);
+    }
+    printf("\t-----------------------------------------------------------------------------------------------------\n");
+    printf("\n");
+}
+
+/**
  * @brief Checks if a file exists in the current working directory
  *
  * @param filename
@@ -533,9 +559,29 @@ void clearInputBuffer()
 }
 
 /**
- * Check if contact already exist in phonebook
+ * Checks if contact already exist in phonebook
  */
-bool numberExists(const char *number) {}
+bool numberExists(char *num)
+{
+    num[strcspn(num, "\n")] = 0; // remove newline froms string
+
+    for (size_t i = 0; i < currentLen; i++)
+    {
+        char phoneNum[MAX_PHONE_LEN];
+
+        strcpy(phoneNum, contacts[i].phone);
+
+        phoneNum[strcspn(phoneNum, "\n")] = 0;
+
+        if (strcmp(num, phoneNum) == 0)
+        {
+
+            return true;
+        }
+    }
+
+    return false;
+}
 
 /**
  * @brief Checks if a string is empty
@@ -619,30 +665,6 @@ bool isDigitsOnly(const char *str)
     }
 
     return true;
-}
-
-/**
- * @brief Get the Index on a contact in contacts array
- *
- * @param str
- * @return int
- */
-int getContactIndex(char *str)
-{
-    for (size_t i = 0; i < currentLen; i++)
-    {
-        if (isDigitsOnly(str))
-        {
-            if (strcmp(contacts[i].phone, str) == 0)
-
-                return i;
-
-            return -1;
-        }
-    }
-
-    printf("Invalid number");
-    return -1;
 }
 
 /**

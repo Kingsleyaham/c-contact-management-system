@@ -35,7 +35,7 @@ void runCommand(int command);
 void printContacts();
 bool fileExists(char *filename);
 void clearInputBuffer();
-bool numberExists(const char *number);
+bool numberExists(char *num);
 bool isEmpty(const char *str);
 bool isDigitsOnly(const char *str);
 int getContactIndex(char *str);
