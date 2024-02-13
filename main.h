@@ -19,9 +19,7 @@ typedef struct
 } Contact;
 
 void addNewContact();
-// Contact *retrieveContacts(char *filename, Contact *contacts);
 Contact *retrieveContacts(char *filename, int *total);
-void searchContact();
 void updateContact();
 void deleteContact();
 void printContacts();
@@ -30,7 +28,7 @@ void searchByName();
 void searchByNumber();
 void deleteAllContact();
 
-void runCommand();
+void runCommand(int command);
 void printCommandsAndUsage();
 void runApp();
 void runCommand(int command);
@@ -42,7 +40,7 @@ bool isEmpty(const char *str);
 bool isDigitsOnly(const char *str);
 int getContactIndex(char *str);
 void getIntegerFromStdin(int *inputInteger);
-void toLowerCase();
+void toLowerCase(char *str);
 void clearTerminal();
 void exitApp();
 

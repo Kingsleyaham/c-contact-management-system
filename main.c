@@ -1,3 +1,15 @@
+/**
+ * @file main.c
+ * Project Title: Phonebook Management System
+ * @brief A phonebook management system that helps individual to manage their contacts
+ * @ref https://github.com/Kingsleyaham/c-contact-management-system
+ * @author KINGSLEY AHAM
+ * @version 0.1
+ * @date 2024-02-13
+ * @copyright Copyright (c) 2024
+ *
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -160,7 +172,9 @@ void addNewContact()
 
     saveContact();
 
-    printf("contact added succesfully\n\n");
+    printf("\n----------------------------------------\n");
+    printf("contact added succesfully\n");
+    printf("----------------------------------------\n");
 }
 
 /**
@@ -352,7 +366,10 @@ void updateContact()
                 strcpy(contacts[i].address, addressInput);
 
             saveContact();
+
+            printf("\n----------------------------------------\n");
             printf("contact updated successfully\n");
+            printf("----------------------------------------\n");
 
             return;
         }
@@ -393,6 +410,10 @@ void searchByName()
     printf("\n");
 }
 
+/**
+ * @brief Search a contact by phone nummber
+ *
+ */
 void searchByNumber()
 {
     char search[MAX_PHONE_LEN];
@@ -453,7 +474,10 @@ void deleteContact()
     currentLen -= 1;
 
     saveContact();
+
+    printf("\n--------------------------------------------\n");
     printf("contact with Id %d deleted successfully\n", contactId);
+    printf("--------------------------------------------\n");
 }
 
 /**
@@ -469,7 +493,10 @@ void deleteAllContact()
         {
             memset(contacts, 0, sizeof(contacts));
             currentLen = 0;
+
+            printf("\n--------------------------------------------\n");
             printf("Contacts deleted successfully\n");
+            printf("--------------------------------------------\n");
 
             return;
         }
@@ -618,6 +645,11 @@ int getContactIndex(char *str)
     return -1;
 }
 
+/**
+ * @brief Covert a text to lowercase
+ *
+ * @param str
+ */
 void toLowerCase(char *str)
 {
     for (size_t i = 0; str[i]; i++)
@@ -625,6 +657,11 @@ void toLowerCase(char *str)
         str[i] = tolower(str[i]);
     }
 }
+
+/**
+ * @brief Clear the terminal
+ *
+ */
 
 void clearTerminal()
 {
